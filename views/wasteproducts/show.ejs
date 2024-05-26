@@ -1,0 +1,71 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <div class="col-md-6">
+      <div id="wasteproductCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <% wasteproduct.images.forEach((img, i) => {  %>
+            <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                <img src="<%= img.url %>" class="d-block w-100 carousel-img" alt="">
+            </div>
+            <% }) %>  
+        </div>
+        <% if(wasteproduct.images.length > 1) { %>
+        <a class="carousel-control-prev" type="button" data-bs-target="#wasteproductCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" type="button" data-bs-target="#wasteproductCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+        <% } %>
+    </div>
+    </div>
+    <div class="col-md-6">
+        <h1 class="heading-color mb-3"><%= wasteproduct.title %></h1>
+        <div class="product-details">
+            <div class="product-item"><b class="heading-color">Type:</b> <%= wasteproduct.type %></div>
+            <div class="product-item"><b class="heading-color">Quantity:</b> <%= wasteproduct.quantity %></div>
+            <div class="product-item"><b class="heading-color">Description:</b> <%= wasteproduct.description %></div>
+            <div class="product-item">
+                <b class="heading-color">Status:</b> 
+                <% function getStatusIcon(status) {
+                  switch (status) {
+                      case 'assigned':
+                          return 'fa-solid fa-hourglass-end'; 
+                      case 'accepted':
+                          return 'fa-solid fa-check'; 
+                      case 'rejected':
+                          return 'fa-solid fa-circle-xmark'; 
+                      default:
+                          return 'fas fa-question-circle';
+                  }
+              } %>
+              <% let iconClass = getStatusIcon(wasteproduct.status); %>
+                <% function capitalizeFirstLetter(string) {
+                  return string.charAt(0).toUpperCase() + string.slice(1);
+                } %>
+              <span class="<%= wasteproduct.status === 'assigned' ? 'text-warning' : wasteproduct.status === 'accepted' ? 'text-success' : 'text-danger' %>">
+                <%= capitalizeFirstLetter(wasteproduct.status) %>
+                <i class="<%= iconClass %>"></i>
+              </span>
+            </div>
+            <% if (wasteproduct.trader) { %>
+                <div class="product-item">
+                    <b class="heading-color">Assigned Trader:</b> <%= wasteproduct.trader.username %>
+                </div>
+            <% }else{ %>
+              <div class="product-item">
+                <b class="heading-color">No Trader is Found</b>
+            </div>
+              <% } %>
+        </div>    
+        <% if (currentUser && wasteproduct.author.equals(currentUser._id) && wasteproduct.status !== 'accepted' && wasteproduct.status !== 'rejected') { %>
+            <a href="/wasteproducts/<%= wasteproduct._id %>/edit" class="btn btn-success">Edit</a>
+            <form class="d-inline" action="/wasteproducts/<%= wasteproduct._id %>?_method=DELETE" method="post">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+        <% } %>
+        <a href="/wasteproducts" class="btn btn-primary">Go Back</a>
+    </div>
+</div>

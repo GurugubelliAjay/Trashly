@@ -1,0 +1,46 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <h1 class="text-center heading-color">Your Orders</h1>
+</div>
+
+<% if(orders.length == 0) { %>
+    <p class="text-center mb-3">No Orders</p>
+    <div class="d-flex justify-content-center">
+        <img class="img-fluid" src="/images/img11.jpg" alt="" style="display: block; width: 40%; height: 40%;">
+    </div>
+<% } else { %>
+    <div class="row">
+        <% orders.forEach(order => { %>
+            <div class="col-md-12 mb-4">
+                <div class="card fixed-card">
+                    <div class="row no-gutters h-100">
+                        <div class="col-md-4">
+                            <img src="<%= order.recycledProduct.images[0].url %>" class="card-img" alt="<%= order.recycledProduct.title %>">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= order.recycledProduct.title %></h5>
+                                <p class="card-text">Quantity: <%= order.quantity %></p>
+                                <p class="card-text">Delivery Date: <%= order.pickUpDate.toDateString() %></p>
+                                <p class="card-text">Location: <%= order.location %></p>
+                                <p class="card-text">
+                                    Status: 
+                                    <% if (order.status === 'Pending') { %>
+                                        <span class="text-warning"><i class="fa-solid fa-clock me-2"></i>Pending</span>
+                                    <% } else if (order.status === 'Ongoing') { %>
+                                        <span class="text-primary"><i class="fa-regular fa-hourglass-half me-2"></i>Ongoing</span>
+                                    <% } else if (order.status === 'Delivered') { %>
+                                        <span class="text-success"><i class="fa-solid fa-truck me-2"></i>Delivered</span>
+                                    <% } else { %>
+                                        <span class="text-danger">Unkown</span>
+                                    <% } %>
+                                </p>
+                                <a href="/orders/<%= order._id %>" class="btn btn-primary">Show Order</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } %>

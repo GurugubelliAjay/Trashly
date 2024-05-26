@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container">
+    <h1 class="text-center heading-color mb-4">Waste Assignments</h1>
+
+    <div class="row">
+        <% if (wasteProducts.length === 0) { %>
+            <p class="text-center">No waste assignments found.</p>
+        <% } else { %>
+            <% wasteProducts.forEach(wasteProduct => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <% if (wasteProduct.images.length) { %>
+                            <img src="<%= wasteProduct.images[0].url %>" class="card-img-top" alt="<%= wasteProduct.title %>">
+                        <% } %>
+                        <div class="card-body">
+                            <h5 class="card-title"><%= wasteProduct.title %></h5>
+                            <p class="card-text">Status: <%= wasteProduct.status %></p>
+                            <p class="card-text">Quantity: <%= wasteProduct.quantity %></p>
+                            <p class="card-text">Type: <%= wasteProduct.type %></p>
+                            <% if (wasteProduct.status === 'assigned') { %>
+                                <form action="/wasteproducts/<%= wasteProduct._id %>/accept" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                                <form action="/wasteproducts/<%= wasteProduct._id %>/reject" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Reject</button>
+                                </form>
+                            <% } else if (wasteProduct.status === 'accepted') { %>
+                                <p class="text-success">Accepted</p>
+                            <% } else if (wasteProduct.status === 'rejected') { %>
+                                <p class="text-danger">Rejected</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</div>

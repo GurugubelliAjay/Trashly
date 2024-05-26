@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <div class="col-md-6 offset-md-3">
+        <h1 class="main-heading text-center heading-color">Trashly</h1>
+        <h4 class="text-center heading-color">Turning Garbage into Gold</h4>
+    </div>
+</div>
+<div class="row justify-content-center mb-3">
+    <img src="/images/img1.png" class="img-fluid mainimg" alt="Responsive image">
+</div>
+<div class="row mb-3 mt-5">
+    <h2 class="text-center heading-color font-weight-bold">About Us</h2>
+    <div class="col-md-6">
+        <img src="/images/img2.jpg" class="img-fluid" alt="Responsive image">
+    </div>
+    <div class="col-md-6 pt-5">
+        <p class="heading-color">Welcome to Trashly, your go-to destination for tackling plastic waste and championing recycling efforts. At Trashly, we're driven by a passion for environmental preservation and a dedication to empowering individuals to make a positive impact on our planet.
+            Established with a clear mission in mind, Trashly aims to redefine the way we manage plastic waste. Our platform offers a user-friendly experience, allowing you to effortlessly upload images of your plastic waste and schedule a pickup service at your convenience. Through our network of nearby traders specializing in recycling, we ensure that your plastic waste is efficiently collected and repurposed, minimizing its impact on the environment.
+            But Trashly is more than just a waste collection service. We believe in rewarding environmentally conscious behavior, which is why we offer cashbacks and redeemable points for every transaction. These incentives not only encourage active participation in waste reduction efforts but also provide you with tangible benefits for your contributions to a cleaner, greener world.
+            Furthermore, Trashly serves as a marketplace for recycled products derived from plastic waste. From innovative household items to eco-friendly fashion accessories, our platform offers a diverse range of sustainable products that demonstrate the value of recycling.
+            At Trashly, we're committed to driving meaningful change and fostering a community of like-minded individuals dedicated to environmental stewardship. Join us in our mission to combat plastic pollution and create a more sustainable future for generations to come. Together, we can make a difference, one plastic bottle at a time</p>
+    </div>
+</div>
+<div class="row mb-3 mt-5">
+    <h2 class="text-center heading-color font-weight-bold">Our Vision and Mission</h2>
+    <div class="col-md-7 pt-5">
+        <p class="heading-color">At Trashly, our vision is to create a world where plastic waste is no longer a threat to our environment. We envision a future where recycling is not just a choice but a way of life, and where every individual plays a role in preserving our planet for future generations.</p>
+        <p class="heading-color">Our mission at Trashly is to revolutionize the way we approach plastic waste management. Through our innovative platform, we aim to empower individuals to take proactive steps towards reducing plastic waste and promoting recycling. By providing seamless solutions for waste collection, incentivizing environmentally responsible behavior, and offering a marketplace for recycled products, we strive to build a sustainable ecosystem that fosters positive change. Together, we are committed to making a tangible difference in the fight against plastic pollution and creating a cleaner, greener world for all.</p>
+    </div>
+    <div class="col-md-5">
+        <img src="/images/img3.jpg" class="img-fluid" alt="Responsive image" style="display: block;max-width: 100%;height: 90%;">
+    </div>
+</div>
+<div class="row mb-3 mt-5">
+    <h2 class="text-center heading-color font-weight-bold">How We Work</h2>
+    <section>
+        <div class="container py-5">
+          <div class="main-timeline-2">
+            <div class="timeline-2 left-2">
+              <div class="card">
+                <div class="card-body p-4">
+                  <h4 class="fw-bold mb-4 heading-color">Sell Your Waste</h4>
+                  <p class="mb-0 heading-color">Effortlessly sell your plastic waste by simply snapping a photo and posting it on our website</p>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-2 right-2">
+              <div class="card">
+                <div class="card-body p-4">
+                  <h4 class="fw-bold mb-4 heading-color">Pickup By Nearby Traders</h4>
+                  <p class="mb-0 heading-color">Conveniently have nearby traders pick up your plastic waste from your location.</p>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-2 left-2">
+              <div class="card">
+                <div class="card-body p-4">
+                  <h4 class="fw-bold mb-4 heading-color">Earn Redeem Points</h4>
+                  <p class="mb-0 heading-color">Earn redeem points with every sale of your waste on our platform, paving the way to sustainable rewards for your eco-friendly actions</p>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-2 right-2">
+              <div class="card">
+                <div class="card-body p-4">
+                  <h4 class="fw-bold mb-4 heading-color"> Shop Recycled Products</h4>
+                  <p class="mb-0 heading-color">Redeem your points to shop a wide range of recycled products available on our platform, from eco-friendly home essentials to stylish accessories.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+</div>
+<div class="row mb-3 mt-5">
+  <h2 class="text-center heading-color font-weight-bold mb-3">Upcoming Events</h2>
+    <% events.forEach(event => { %>
+  <div class="col-md-4">
+      <div class="card mb-3">
+          <div class="card-body">
+              <h5 class="card-title heading-color"><%= event.name %></h5>
+              <p class="card-text"><%= event.description %></p>
+              <p class="card-text"><b class="heading-color">Date: </b> <%= event.date.toDateString() %></p>
+              <p class="card-text"><b class="heading-color">Time: </b>  <%= event.time %></p>
+              <p class="card-text"><b class="heading-color">Location: </b>  <%= event.location %></p>
+              <a href="/events/<%= event._id %>" class="btn btn-primary">View Details</a>
+          </div>
+      </div>
+  </div>
+  <% }) %>
+</div>

@@ -1,0 +1,25 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <h1 class="text-center heading-color mb-3">Report Waste</h1>
+    <div class="col-md-6 d-flex justify-content-center">
+        <img src="/images/img14.jpg" class="img-fluid" alt="Responsive image" style="display: block; max-width: 90% ;height: 90%;">
+    </div>
+    <div class="col-md-6">
+        <h5 class="heading-color mb-3">Upload an Image to Report Waste in Your Area</h5>
+        <form action="/complaints" method="POST" enctype="multipart/form-data" novalidate class="validated-form">
+            <div class="form-group mb-3">
+                <label for="description" class="heading-color">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="5" required></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="location" class="heading-color">Location</label>
+                <input type="text" name="location" id="location" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="image" class="heading-color">Choose Images</label>
+                <input type="file" name="image" id="image" class="form-control" multiple>
+            </div>
+            <button type="submit" class="btn btn-success ">Submit Complaint</button>
+        </form>
+    </div>
+</div>

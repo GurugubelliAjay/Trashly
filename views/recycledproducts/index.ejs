@@ -1,0 +1,64 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <h1 class="text-center heading-color mb-3">Shop Recycled Products</h1>
+    <h5 class="text-center heading-color">With Your Redeem Points</h5>
+
+</div>
+<div class="container">
+    <div class="row mb-3 justify-content-end">
+        <div class="col-md-4">
+            <form action="/recycledproducts" method="GET" class="d-flex form-inline">
+                <div class="input-group"> 
+                    <input type="text" class="form-control" id="search" name="q" placeholder="Search for a product" value="<%= searchQuery || '' %>">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row mb-3 justify-content-end">
+        <div class="col-md-3">
+            <form action="/recycledproducts" method="GET" class="d-flex form-inline">
+                <div class="input-group">
+                    <select class="form-select" name="category" aria-label="Select Category">
+                        <option value="">All Categories</option>
+                        <option value="Organic Waste" <%= selectedCategory === 'Organic Waste' ? 'selected' : '' %>>Organic Waste</option>
+                        <option value="Paper Waste" <%= selectedCategory === 'Paper Waste' ? 'selected' : '' %>>Paper Waste</option>
+                        <option value="Plastic Waste" <%= selectedCategory === 'Plastic Waste' ? 'selected' : '' %>>Plastic Waste</option>
+                        <option value="Glass Waste" <%= selectedCategory === 'Glass Waste' ? 'selected' : '' %>>Glass Waste</option>
+                        <option value="Metal Waste" <%= selectedCategory === 'Metal Waste' ? 'selected' : '' %>>Metal Waste</option>
+                        <option value="E Waste" <%= selectedCategory === 'E Waste' ? 'selected' : '' %>>E Waste</option>
+                        <option value="Hazardous Waste" <%= selectedCategory === 'Hazardous Waste' ? 'selected' : '' %>>Hazardous Waste</option>
+                        <option value="Textile Waste" <%= selectedCategory === 'Textile Waste' ? 'selected' : '' %>>Textile Waste</option>
+                        <option value="Food Waste" <%= selectedCategory === 'Food Waste' ? 'selected' : '' %>>Food Waste</option>
+                        <option value="Medical Waste" <%= selectedCategory === 'Medical Waste' ? 'selected' : '' %>>Medical Waste</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row mb-3 justify-content-center">
+        <% if (recycledproducts.length === 0) { %>
+            <p class="text-center">No recycled products found</p>
+            <img class="img-fluid" src="/images/img11.jpg" alt="" style="display: block; width: 40% ; height: 40%;" >
+        <% } else { %>
+            <% recycledproducts.forEach(recycledproduct => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <% if (recycledproduct.images.length) { %>
+                            <img class="card-img-top" alt="<%= recycledproduct.title %>" src="<%= recycledproduct.images[0].url %>">
+                        <% } %>
+                        <div class="card-body">
+                            <h5 class="card-title text-center"><%= recycledproduct.title %></h5>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-primary" href="/recycledproducts/<%= recycledproduct._id %>">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</div>

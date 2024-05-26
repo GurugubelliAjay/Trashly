@@ -1,0 +1,28 @@
+<% layout('layouts/boilerplate') %>
+<div class="container">
+    <div class="row mb-3">
+        <h2 class="text-center heading-color font-weight-bold"><%= event.name %></h2>
+        <div class="col-md-6">
+            <img src="/images/img15.jpg" class="img-fluid" alt="Event image">
+        </div>
+        <div class="col-md-6 pt-3">
+            <p><%= event.description %></p>
+            <p><strong class="heading-color">Date:</strong> <%= event.date.toDateString() %></p>
+            <p><strong class="heading-color">Time:</strong> <%= event.time %></p>
+            <p><strong class="heading-color">Location:</strong> <%= event.location %></p>
+            <h3 class="mt-4 heading-color">Registered Users</h3>
+            <% if (event.registeredUsers.length > 0) { %>
+                <ul>
+                    <% event.registeredUsers.forEach(user => { %>
+                        <li><%= user.username %> (<%= user.email %>)</li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No users registered yet.</p>
+            <% } %>
+            <form action="/events/<%= event._id %>/register" method="POST" class="mt-4">
+                <button type="submit" class="btn btn-success">Register</button>
+            </form>
+        </div>
+    </div>
+</div>

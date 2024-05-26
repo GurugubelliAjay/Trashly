@@ -1,0 +1,68 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div id="recycledproductCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                <% recycledproduct.images.forEach((img, i) => {  %>
+                <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
+                    <img src="<%= img.url%>" class="d-block w-100 carousel-img" alt="">
+                </div>
+                <% }) %>  
+    
+            </div>
+            <% if(recycledproduct.images.length > 1) {%>
+            <a class="carousel-control-prev" type="button" data-bs-target="#recycledproductCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" type="button" data-bs-target="#recycledproductCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+            <% } %>
+        </div>
+    </div>
+    <div class="col-md-6">
+    <h1 class=" heading-color mb-3"><%= recycledproduct.title %> </h1>
+    <div class="product-details">
+        <div class="product-item"><b class="heading-color">Type:</b> <%= recycledproduct.type %></div>
+        <div class="product-item"><b class="heading-color">Price: &#8377;</b> <%= recycledproduct.price %></div>
+        <div class="product-item"><b class="heading-color">Description: </b><%= recycledproduct.description %></div>
+    </div>
+    
+          <% if(currentUser && recycledproduct.author.equals(currentUser._id)) { %>
+          <a href="/recycledproducts/<%= recycledproduct._id %>/edit" class="btn btn-success">Edit</a>
+          <form class="d-inline"  action="/recycledproducts/<%= recycledproduct._id %>?_method=DELETE" method="post">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+          <% } %>
+          <% if (currentUser && currentUser.constructor.modelName === 'User') { %>
+      <a href="/orders/new?productId=<%= recycledproduct._id %>" class="btn btn-danger">Order</a>
+      <a href="/recycledproducts" class="btn btn-primary">Go Back</a>
+
+      <% } %>
+    </div>
+</div>
+<script>
+  document.getElementById('buyButton').addEventListener('click', function() {
+    const productId = '<%= recycledproduct._id %>';
+    buyProduct(productId);
+});
+
+function buyProduct(productId) {
+    fetch(`/recycledproducts/buy/${productId}`, {
+        method: 'POST',
+        credentials: 'same-origin' 
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to buy product');
+        }
+        window.location.href = '/recycledproducts/buy'; 
+    })
+    .catch(error => {
+        console.error('Error buying product:', error);
+    });
+}
+
+</script>

@@ -1,0 +1,46 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <h1 class="text-center heading-color">Your Complaints</h1>
+</div>
+
+<% if(complaints.length === 0) { %>
+    <p class="text-center mb-3">No Complaints</p>
+    <div class="d-flex justify-content-center">
+        <img class="img-fluid" src="/images/img11.jpg" alt="No Complaints" style="display: block; width: 40%; height: 40%;">
+    </div>
+<% } else { %>
+    <div class="row">
+        <% complaints.forEach(complaint => { %>
+            <div class="col-md-6 mb-4">
+                <div class="card fixed-card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= complaint.description %></h5>
+                        <p class="card-text"><strong>Location:</strong> <%= complaint.location %></p>
+                        <p class="card-text"><strong>Reported On:</strong> <%= complaint.createdAt.toDateString() %></p>
+                        <% if(complaint.images.length > 0) { %>
+                            <div id="complaintCarousel<%= complaint._id %>" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <% complaint.images.forEach((img, i) => { %>
+                                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                            <img src="<%= img.url %>" class="d-block w-100 carousel-img" alt="Image <%= i + 1 %>">
+                                        </div>
+                                    <% }) %>
+                                </div>
+                                <% if(complaint.images.length > 1) { %>
+                                    <a class="carousel-control-prev" type="button" data-bs-target="#complaintCarousel<%= complaint._id %>" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" type="button" data-bs-target="#complaintCarousel<%= complaint._id %>" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </a>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } %>

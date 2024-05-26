@@ -1,0 +1,253 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container">
+    <h1 class="text-center heading-color mb-4">Admin Dashboard</h1>
+
+    <h2 class="text-center heading-color mb-4">Users</h2>
+    <div class="row">
+        <% if (users.length === 0) { %>
+            <p class="text-center">No users found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Phone</th>
+                            <th>Redeem Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user.username %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.location %></td>
+                                <td><%= user.phone %></td>
+                                <td><%= user.redeemPoints %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <h2 class="text-center heading-color mb-4">Traders</h2>
+    <div class="row">
+        <% if (traders.length === 0) { %>
+            <p class="text-center">No traders found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>Phone</th>
+                            <th>Recycling Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% traders.forEach(trader => { %>
+                            <tr>
+                                <td><%= trader.username %></td>
+                                <td><%= trader.email %></td>
+                                <td><%= trader.location %></td>
+                                <td><%= trader.phone %></td>
+                                <td><%= trader.recyclingType %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <h2 class="text-center heading-color mb-4">Orders</h2>
+    <div class="row">
+        <% if (orders.length === 0) { %>
+            <p class="text-center">No orders found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Status</th>
+                            <th>Quantity</th>
+                            <th>Pickup Date</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                <td><%= order._id %></td>
+                                <td><%= order.status %></td>
+                                <td><%= order.quantity %></td>
+                                <td><%= order.pickUpDate ? order.pickUpDate.toLocaleDateString() : "" %></td>
+                                <td><%= order.location %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <h2 class="text-center heading-color mb-4">Waste Products</h2>
+    <div class="row">
+        <% if (wasteProducts.length === 0) { %>
+            <p class="text-center">No waste products found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Quantity</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                            <th>User</th>
+                            <th>Trader</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% wasteProducts.forEach(wasteProduct => { %>
+                            <tr>
+                                <td><%= wasteProduct.title %></td>
+                                <td><%= wasteProduct.status %></td>
+                                <td><%= wasteProduct.quantity %></td>
+                                <td><%= wasteProduct.type %></td>
+                                <td>
+                                    <% if (wasteProduct.status === 'assigned') { %>
+                                        <form action="/wasteproducts/<%= wasteProduct._id %>/accept" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                        </form>
+                                        <form action="/wasteproducts/<%= wasteProduct._id %>/reject" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    <% } else if (wasteProduct.status === 'accepted') { %>
+                                        <span class="text-success">Accepted</span>
+                                    <% } else if (wasteProduct.status === 'rejected') { %>
+                                        <span class="text-danger">Rejected</span>
+                                    <% } %>
+                                </td>
+                                <td><%= (wasteProduct.author).username %></td>
+                                <td><%= (wasteProduct.trader ? wasteProduct.trader.username : "") %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <h2 class="text-center heading-color mb-4">Recycled Products</h2>
+    <div class="row">
+        <% if (recycledProducts.length === 0) { %>
+            <p class="text-center">No recycled products found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Trader</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% recycledProducts.forEach(recycledProduct => { %>
+                            <tr>
+                                <td><%= recycledProduct.title %></td>
+                                <td><%= recycledProduct.type %></td>
+                                <td><%= recycledProduct.price %></td>
+                                <td><%= (recycledProduct.author).username%></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+
+    <h2 class="text-center heading-color mb-4">Complaints</h2>
+    <div class="row">
+        <% if (complaints.length === 0) { %>
+            <p class="text-center">No complaints found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>User</th>
+                            <th>Description</th>
+                            <th>Location</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% complaints.forEach(complaint => { %>
+                            <tr>
+                                <td><%= complaint._id %></td>
+                                <td><%= complaint.user.username %></td>
+                                <td><%= complaint.description %></td>
+                                <td><%= complaint.location %></td>
+                                <td><%= complaint.createdAt ? complaint.createdAt.toLocaleDateString() : "" %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+    <h2 class="text-center heading-color mb-4">Events</h2>
+    <div class="row">
+        <% if (events.length === 0) { %>
+            <p class="text-center">No events found.</p>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Registered Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% events.forEach(event => { %>
+                            <tr>
+                                <td><%= event.name %></td>
+                                <td><%=event.date ? event.date.toLocaleDateString() : "" %></td>
+                                <td><%= event.time %></td>
+                                <td><%= event.location %></td>
+                                <td>
+                                    <% if (event.registeredUsers.length === 0) { %>
+                                        <p>No registered users</p>
+                                    <% } else { %>
+                                        <ul>
+                                            <% event.registeredUsers.forEach(user => { %>
+                                                <li><%= user.username %> (<%= user.email %>)</li>
+                                            <% }) %>
+                                        </ul>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</div>

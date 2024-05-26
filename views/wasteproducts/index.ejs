@@ -1,0 +1,24 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <h1 class="text-center heading-color mb-3">Your Traded Waste Materials</h1>
+</div>
+<div class="row mb-3 justify-content-center">
+    <% if(wasteproducts.length == 0) { %>
+        <p class="text-center mb-3">You have not traded any waste</p>
+        <img class="img-fluid" src="/images/img11.jpg" alt="" style="display: block; width: 40%; height: 40%;">
+    <% } else { %>
+        <% wasteproducts.forEach(wasteproduct => { %>
+            <div class="col-md-4">
+                <div class="card mb-3" style="width: 18rem;">
+                    <% if(wasteproduct.images.length) { %>
+                        <img class="card-img-top" alt="" src="<%= wasteproduct.images[0].url %>">
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title text-center"><%= wasteproduct.title %></h5>
+                        <a class="btn btn-primary d-flex justify-content-center" href="/wasteproducts/<%= wasteproduct._id %>">View Details</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } %>
+</div>

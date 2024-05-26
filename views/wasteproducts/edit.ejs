@@ -1,0 +1,75 @@
+<% layout('layouts/boilerplate')%>
+<div class="row mb-3">
+    <h1 class="text-center heading-color">Edit Your Waste</h1>
+    <div class="col-md-6">
+        <img src="/images/img6.jpg" class="img-fluid" alt="Responsive image" >
+    </div>
+    <div class="col-md-6 mt-3">
+        <form action="/wasteproducts/<%=wasteproduct._id%>?_method=PUT" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="wasteproduct[title]"  value="<%= wasteproduct.title %>"   required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div> 
+            <div class="mb-3">
+                <label class="form-label" for="quantity">Quantity</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" id="quantity" name="wasteproduct[quantity]" value="<%= wasteproduct.quantity %>"    required>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="kg">Kg</span>
+                    </div>
+                </div>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="type">Type</label>
+                <select class="form-control" id="type" name="wasteproduct[type]" required>
+                    <option value="Organic Waste" <%= wasteproduct.type === 'Organic Waste' ? 'selected' : '' %>>Organic Waste</option>
+                    <option value="Paper Waste" <%= wasteproduct.type === 'Paper Waste' ? 'selected' : '' %>>Paper Waste</option>
+                    <option value="Plastic Waste" <%= wasteproduct.type === 'Plastic Waste' ? 'selected' : '' %>>Plastic Waste</option>
+                    <option value="Glass Waste" <%= wasteproduct.type === 'Glass Waste' ? 'selected' : '' %>>Glass Waste</option>
+                    <option value="Metal Waste" <%= wasteproduct.type === 'Metal Waste' ? 'selected' : '' %>>Metal Waste</option>
+                    <option value="E Waste" <%= wasteproduct.type === 'E Waste' ? 'selected' : '' %>>E Waste</option>
+                    <option value="Hazardous Waste" <%= wasteproduct.type === 'Hazardous Waste' ? 'selected' : '' %>>Hazardous Waste</option>
+                    <option value="Textile Waste" <%= wasteproduct.type === 'Textile Waste' ? 'selected' : '' %>>Textile Waste</option>
+                    <option value="Food Waste" <%= wasteproduct.type === 'Food Waste' ? 'selected' : '' %>>Food Waste</option>
+                    <option value="Medical Waste" <%= wasteproduct.type === 'Medical Waste' ? 'selected' : '' %>>Medical Waste</option>
+                </select>
+
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="wasteproduct[description]"   
+                    required><%= wasteproduct.description %></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">Add Images</label>
+                <input type="file" class="form-control" id="image" name="image" multiple>
+            </div> 
+            <div class="mb-3">
+                <% wasteproduct.images.forEach(function(img, i) {  %>
+                <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="Image">
+                <div class="form-check-inline">
+                    <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
+                </div>
+                <label for="image-<%=i%>">Delete?</label>
+                <% })%>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-success">Submit</button>
+                <a href="/wasteproducts/<%= wasteproduct._id %>" class="btn btn-warning">Go Back</a>
+            </div>
+        </form>
+    </div>
+</div>
