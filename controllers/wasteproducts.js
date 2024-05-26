@@ -1,3 +1,4 @@
+require('dotenv').config();
 const WasteProduct=require('../models/wasteproduct');
 const User=require('../models/user')
 const Trader=require('../models/trader');
