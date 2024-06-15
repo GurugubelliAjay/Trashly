@@ -7,16 +7,49 @@ const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 const {cloudinary}=require('../cloudinary')
-const matchTrader = async (wasteProduct) => {
-    const traders = await Trader.find({
-        recyclingType: wasteProduct.type,
-        // Add more criteria like location, capacity, etc.
-    });
+const geolib = require('geolib');
+const matchTrader = async (wasteProduct, userLocation) => {
+    try {
+        const traders = await Trader.find({
+            recyclingType: wasteProduct.type,
+        });
 
-    // Sort traders based on predefined criteria (e.g., distance, capacity)
-    // For simplicity, we'll assume the first trader is the best match
-    return traders.length > 0 ? traders[0] : null;
+        if (!traders || traders.length === 0) {
+            console.error('No traders found for the specified recycling type:', wasteProduct.type);
+            return null;
+        }
+
+        const traderDistances = traders.map(trader => {
+            if (!trader.location || !trader.location.coordinates) { 
+                console.error('Invalid trader location:', trader);
+                return null;
+            }
+
+            const distance = geolib.getDistance(
+                { latitude: userLocation.coordinates[1], longitude: userLocation.coordinates[0] },
+                { latitude: trader.location.coordinates[1], longitude: trader.location.coordinates[0] }
+            );
+
+            return { trader, distance };
+        });
+
+        traderDistances.sort((a, b) => a.distance - b.distance);
+
+        const nearestTrader = traderDistances[0];
+
+        if (!nearestTrader) {
+            console.error('No nearest trader found.');
+            return null;
+        }
+
+        return nearestTrader.trader;
+    } catch (error) {
+        console.error('Error matching trader:', error);
+        return null;
+    }
 };
+
+
 const notifyTrader = async (trader, wasteProduct) => {
     const phone='+91'+trader.phone;
     try {
@@ -39,21 +72,24 @@ module.exports.createNewWasteProduct = async (req, res) => {
     wasteproductData.author = req.user._id;
     const wasteproduct = new WasteProduct(wasteproductData);
     wasteproduct.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
-
-
     try {
         await wasteproduct.save();
-        const matchedTrader = await matchTrader(wasteproduct);
+
+        // Retrieve user's location from the User model
+        const user = await User.findById(req.user._id);
+
+        // Find the nearest trader based on the waste product and user's location
+        const matchedTrader = await matchTrader(wasteproduct, user.location);
 
         if (matchedTrader) {
             wasteproduct.trader = matchedTrader._id;
             wasteproduct.status = 'assigned';
             await wasteproduct.save();
-            
+
             // Notify the trader
             await notifyTrader(matchedTrader, wasteproduct);
-        }else{
-            wasteproduct.status='rejected';
+        } else {
+            wasteproduct.status = 'rejected';
             await wasteproduct.save();
         }
 
@@ -65,7 +101,6 @@ module.exports.createNewWasteProduct = async (req, res) => {
         res.redirect('/wasteproducts/new');
     }
 };
-
 
 
 
