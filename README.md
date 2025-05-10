@@ -2,16 +2,6 @@
 
 Welcome to Trashly ! This repository contains the codebase for a comprehensive web application designed to facilitate efficient waste collection, recycling transactions, and user engagement through various features. The platform aims to promote environmental stewardship and sustainable practices by making waste management processes more accessible and user-friendly.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Features
 
 - **User Registration and Authentication**: Secure user registration and login system with Passport.js for Users, Traders, and Admins.
@@ -79,22 +69,3 @@ The application provides a set of RESTful APIs for managing data. Below are some
 - **Create Event**: `POST /events`
 - **Register for Event**: `POST /events/:id/register`
 
-For detailed API documentation, refer to the [API Documentation](docs/api.md).
-
-## Contributing
-
-Contributions are welcome! Please fork this repository and submit pull requests for any features, bug fixes, or enhancements.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -m 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Open a pull request
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
-
----
-
-Thank you for your interest in the Waste Management System project. We hope this platform contributes to a cleaner and more sustainable environment. If you have any questions or suggestions, feel free to open an issue or contact the project maintainers.
